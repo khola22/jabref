@@ -386,7 +386,14 @@ public class BackupManagerGit {
                 String fileToCheck = FilenameUtils.removeExtension(originalPath.getFileName().toString()) + ".bak";
                 ObjectId fileId = repository.resolve("HEAD:" + fileToCheck);
                 if (fileId == null) {
-                    LOGGER.warn("Can't get head commit");
+                    LOGGER.info("No commit with file found. Creating first commit with file");
+                    Path backupFilePath = backupDir.resolve(FilenameUtils.removeExtension(originalPath.getFileName().toString()) + ".bak");
+
+                    Files.createFile(backupFilePath);
+                    Files.copy(originalPath, backupFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+                    git.add().addFilepattern(".").call();
+                    git.commit().setMessage("Backup at " + Instant.now().toString()).call();
                     return false;
                 }
                 loader = repository.open(fileId);

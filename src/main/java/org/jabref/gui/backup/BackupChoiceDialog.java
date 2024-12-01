@@ -73,7 +73,7 @@ public class BackupChoiceDialog extends BaseDialog<BackupChoiceDialogRecord> {
         TableColumn<BackupEntry, Integer> entriesColumn = new TableColumn<>(Localization.lang("Number of Entries"));
         entriesColumn.setCellValueFactory(cellData -> cellData.getValue().entriesProperty().asObject());
 
-        backupTableView.getColumns().addAll(dateColumn, sizeColumn, entriesColumn);
+        boolean b = backupTableView.getColumns().addAll(dateColumn, sizeColumn, entriesColumn);
     }
 
     private void fetchBackupData() {
